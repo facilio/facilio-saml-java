@@ -103,4 +103,5 @@ Getting organization details:
 long orgId = SAMLUtil.getCurrentAccount().getOrg().getOrgId();
 String orgName = SAMLUtil.getCurrentAccount().getOrg().getName();
 String orgDomain = SAMLUtil.getCurrentAccount().getOrg().getDomain();
-String orgTimezone = SAMLUtil.getCurrentAccount().getOrg().getTimezone();```
+String orgTimezone = SAMLUtil.getCurrentAccount().getOrg().getTimezone();
+```
