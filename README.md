@@ -2,7 +2,7 @@
 
 The java library for implementing SAML enabled server-side connected apps for Facilio.
 
-- To learn more about Connected Apps in Facilio - [Refer here](https://guide.facilio.com/knowledge-base/connected-app/). 
+- To learn more about Connected Apps in Facilio - [Refer here](https://guide.facilio.com/knowledge-base/connected-app/)
 
 ## Installation
 
