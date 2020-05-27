@@ -14,6 +14,11 @@ import org.opensaml.saml.saml2.core.AttributeStatement;
 
 import com.coveo.saml.SamlResponse;
 
+/**
+ * 
+ * Assertion Consumer Service Servlet
+ *
+ */
 public class ACSServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
