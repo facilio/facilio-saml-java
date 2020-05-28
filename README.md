@@ -83,25 +83,29 @@ Add this servlet for handling logout which can be IdP initiated logout or SP ini
 
 ### Current Account
 
-Option to get current facilio account:
+Method to get current facilio account:
 ```
 Account account = SAMLUtil.getCurrentAccount();
 ```
 
 Getting user details:
 ```
-long userId = SAMLUtil.getCurrentAccount().getUser().getUserId();
-String name = SAMLUtil.getCurrentAccount().getUser().getName();
-String email = SAMLUtil.getCurrentAccount().getUser().getEmail();
-String role = SAMLUtil.getCurrentAccount().getUser().getRole();
-String timezone = SAMLUtil.getCurrentAccount().getUser().getTimezone();
-Locale locale = SAMLUtil.getCurrentAccount().getUser().getLocale();
+User user = account.getUser();
+
+long userId = user.getUserId();
+String name = user.getName();
+String email = user.getEmail();
+String role = user.getRole();
+String timezone = user.getTimezone();
+Locale locale = user.getLocale();
 ```
 
 Getting organization details:
 ```
-long orgId = SAMLUtil.getCurrentAccount().getOrg().getOrgId();
-String orgName = SAMLUtil.getCurrentAccount().getOrg().getName();
-String orgDomain = SAMLUtil.getCurrentAccount().getOrg().getDomain();
-String orgTimezone = SAMLUtil.getCurrentAccount().getOrg().getTimezone();
+Organization org = account.getOrg();
+
+long orgId = org.getOrgId();
+String orgName = org.getName();
+String orgDomain = org.getDomain();
+String orgTimezone = org.getTimezone();
 ```
