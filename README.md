@@ -5,11 +5,13 @@ The java library for implementing SAML enabled server-side connected apps for Fa
 - To learn more about Connected Apps in Facilio - [Refer here](https://guide.facilio.com/knowledge-base/connected-app/)
 
 
+#### Getting started
+
   * [Installation](#installation)
   * [Add Filter & Servlets in web.xml](#add-filter--servlets-in-webxml)
 	* [SAMLFilter](#samlfilter)
-        * [ACS Servlet](#acs-servlet)
-	* [Single Logout Servlet](#single-logout-serlvet)
+	* [ACS Servlet](#acs-servlet)
+	* [Single Logout Servlet](#single-logout-servlet)
   * [IDP Metadata](#idp-metadata)
   * [Current Account](#current-account)
 
