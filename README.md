@@ -4,6 +4,15 @@ The java library for implementing SAML enabled server-side connected apps for Fa
 
 - To learn more about Connected Apps in Facilio - [Refer here](https://guide.facilio.com/knowledge-base/connected-app/)
 
+
+  * [Installation](#installation)
+  * [Add Filter & Servlets in web.xml](#add-filter--servlets-in-webxml)
+	* [SAMLFilter](#samlfilter)
+        * [ACS Servlet](#acs-servlet)
+	* [Single Logout Servlet](#single-logout-serlvet)
+  * [IDP Metadata](#idp-metadata)
+  * [Current Account](#current-account)
+
 ## Installation
 
 ### Maven users
@@ -15,6 +24,8 @@ Add the below dependency to your ```pom.xml```:
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
+
+## Add Filter & Servlets in web.xml
 
 ### SAMLFilter
 
@@ -81,7 +92,12 @@ Add this servlet for handling logout which can be IdP initiated logout or SP ini
 </servlet-mapping>
 ```
 
-### Current Account
+## IdP Metadata
+
+To authorize your app with Facilio, download IdP metadata from SAML Settings in Facilio Connected Apps. And, add the downloaded `idp_metadata.xml` xml file under `WEB-INF/classes`.
+
+
+## Current Account
 
 Method to get current facilio account:
 ```
