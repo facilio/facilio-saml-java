@@ -1,18 +1,13 @@
 package com.facilio.saml;
 
-import java.util.HashMap;
-import java.util.List;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.saml2.core.Attribute;
-import org.opensaml.saml.saml2.core.AttributeStatement;
-
-import com.coveo.saml.SamlResponse;
+import com.facilio.saml.SAMLClient.SAMLResponse;
 
 /**
  * 
@@ -26,27 +21,19 @@ public class ACSServlet extends HttpServlet {
 	public void service(HttpServletRequest req, HttpServletResponse res) {
 		String SAMLResponse = req.getParameter("SAMLResponse");
 		String RelayState = req.getParameter("RelayState");
+		
+		String origin = req.getParameter("origin");
+		String cAppId = req.getParameter("capp_id");
     	if (SAMLResponse == null) {
     		return;
     	}
     	
-        SamlResponse samlResponse;
+        SAMLResponse samlResponse;
 		try {
-			samlResponse = SAMLFilter.getSamlClient().decodeAndValidateSamlResponse(SAMLResponse);
-			String authUserEmail = samlResponse.getNameID();
+			samlResponse = SAMLFilter.getSamlClient().validateSAMLResponse(SAMLResponse);
+			String authUserEmail = samlResponse.getNameId();
 			
-			Map<String, String> userData = new HashMap<String, String>();
-			for (AttributeStatement attributeStatement : samlResponse.getAssertion().getAttributeStatements()) {
-		        
-				for (Attribute attribute : attributeStatement.getAttributes()) {
-					
-					List<XMLObject> attributeValues = attribute.getAttributeValues();
-					if (!attributeValues.isEmpty()) {
-						String value = attributeValues.get(0).getDOM().getTextContent();
-						userData.put(attribute.getName(), value);
-					}
-		        }
-		    }
+			Map<String, String> userData = samlResponse.getAttributes();
 			
 			Account currentAccount = Account.getAccount(authUserEmail, userData);
 			if (currentAccount != null) {
@@ -54,6 +41,16 @@ public class ACSServlet extends HttpServlet {
 				req.getSession().setAttribute(SAMLUtil.CURRENT_ACCOUNT, currentAccount);
 				
 				String redirectURL = RelayState != null ? RelayState : SAMLFilter.getHomeUrl();
+				if (origin != null && !origin.isEmpty() && cAppId != null && !cAppId.isEmpty()) {
+					String sdkParams = "origin=" + URLEncoder.encode(origin, "UTF-8") + "&capp_id=" + cAppId;
+					
+					if (redirectURL.indexOf("?") > 0) {
+						redirectURL += "&" + sdkParams;
+					}
+					else {
+						redirectURL += "?" + sdkParams;
+					}
+				}
 				res.sendRedirect(redirectURL);
 			}
 			else {

@@ -1,9 +1,7 @@
 package com.facilio.saml;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -17,11 +15,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.coveo.saml.SamlClient;
-
 public class SAMLFilter implements Filter
 {
 	private static final Logger LOGGER = Logger.getLogger(SAMLFilter.class.getName());
+	
+	private static String ENTITY_ID = "https://localhost:8080";
 	
 	private static String HOME_URL = "/home";
 	
@@ -33,9 +31,13 @@ public class SAMLFilter implements Filter
 	
 	private static String EXCLUDE_PATTERN = null;
 	
-	private static SamlClient SAML_CLIENT = null;
+	private static SAMLClient SAML_CLIENT = null;
 
 	public void init(FilterConfig config) throws ServletException {
+		if (config.getInitParameter("entity_id") != null) {
+			ENTITY_ID = config.getInitParameter("entity_id");
+		}
+		
 		if (config.getInitParameter("home_url") != null) {
 			HOME_URL = config.getInitParameter("home_url");
 		}
@@ -57,8 +59,8 @@ public class SAMLFilter implements Filter
 		}
 		
 		try {
-			Reader reader = new InputStreamReader(SAMLFilter.class.getClassLoader().getResourceAsStream(IDP_METADATA), StandardCharsets.UTF_8);
-			SAML_CLIENT = SamlClient.fromMetadata("FacilioSAML", ACS_URL, reader);
+			InputStream idpMetadataXml = SAMLFilter.class.getClassLoader().getResourceAsStream(IDP_METADATA);
+			SAML_CLIENT = new SAMLClient(ENTITY_ID, ACS_URL, idpMetadataXml);
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "SAML Initialize failed.... ", e);
 		}
@@ -99,7 +101,7 @@ public class SAMLFilter implements Filter
 		}
 	}
 	
-	public static SamlClient getSamlClient() {
+	public static SAMLClient getSamlClient() {
 		return SAML_CLIENT;
 	}
 	
