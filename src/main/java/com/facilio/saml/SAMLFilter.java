@@ -2,6 +2,7 @@ package com.facilio.saml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -88,7 +89,9 @@ public class SAMLFilter implements Filter
 				SAMLUtil.setCurrentAccount(account);
 			}
 			else {
-				resp.sendRedirect(getLoginUrl());
+				String currentUrl = hreq.getRequestURI() + (hreq.getQueryString() != null ? "?" + hreq.getQueryString() : "");
+				String loginUrl = getLoginUrl() + "?redirect=" + URLEncoder.encode(currentUrl, "UTF-8");
+				resp.sendRedirect(loginUrl);
 				return;
 			}
 			chain.doFilter(request, response);

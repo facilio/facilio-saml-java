@@ -7,10 +7,12 @@ public class Account {
 	
 	private User user;
 	private Organization org;
+	private Long connectedAppId;
 	
-	public Account(User usr, Organization org) {
+	public Account(User usr, Organization org, Long connectedAppId) {
 		this.user = usr;
 		this.org = org;
+		this.connectedAppId = connectedAppId;
 	}
 	
 	public User getUser() {
@@ -21,6 +23,10 @@ public class Account {
 		return this.org;
 	}
 	
+	public Long getConnectedAppId() {
+		return connectedAppId;
+	}
+
 	public static Account getAccount(String email, Map<String, String> userData) {
 		if (email == null || userData == null) {
 			return null;
@@ -37,6 +43,7 @@ public class Account {
 		String orgName = null;
 		String orgDomain = null;
 		String orgTimezone = null;
+		Long connectedAppId = null;
 		
 		if (userData.containsKey("USER_ID")) {
 			userId = Long.parseLong(userData.get("USER_ID"));
@@ -69,11 +76,14 @@ public class Account {
 		if (userData.containsKey("ORG_TIMEZONE")) {
 			orgTimezone = userData.get("ORG_TIMEZONE");
 		}
+		if (userData.containsKey("CONNECTED_APP_ID")) {
+			connectedAppId = Long.parseLong(userData.get("CONNECTED_APP_ID"));
+		}
 		
 		User usr = new User().setEmail(email).setName(name).setUserId(userId).setLang(lang).setCountry(country).setTimezone(timezone).setRole(role);
 		Organization org = new Organization().setOrgId(orgId).setName(orgName).setDomain(orgDomain).setTimezone(orgTimezone);
 		
-		return new Account(usr, org);
+		return new Account(usr, org, connectedAppId);
 	}
 	
 	public static class User {
